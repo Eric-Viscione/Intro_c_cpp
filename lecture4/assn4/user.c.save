@@ -1,0 +1,116 @@
+#include <stdio.h>
+#include "bintree.h"
+
+int main() {
+	/*
+	Insert your test code here. Try inserting nodes then searching for them.
+
+	When we grade, we will overwrite your main function with our own sequence of
+	insertions and deletions to test your implementation. If you change the
+	argument or return types of the binary tree functions, our grading code
+	won't work!
+	*/
+	The pointers to the binary tree nodes, such as `root`, are accessible within the scope where they are defined. Here's a brief rundown on how visibility and accessibility work:
+
+### **Scope of `root`**
+
+1. **Global Scope**:
+   - If `root` is defined as a global variable, it will be accessible throughout the entire program. This means any function can access or modify `root`.
+
+2. **Local Scope**:
+   - If `root` is defined within a function or a specific scope, its accessibility is limited to that function or scope. For example, if `root` is declared locally in a function, it cannot be accessed outside that function.
+
+### **Access Across Functions**
+
+- **Global Variable**: If `root` is a global variable, you can access it in any function by declaring it as `extern` in other files (if needed). For example:
+  ```c
+  // In bintree.h
+  extern node* root;
+  ```
+
+- **Pass by Pointer**: Alternatively, you can pass the pointer to the root node (or any node) as an argument to functions that need to access or modify the tree. This is useful for maintaining encapsulation and modularity.
+
+### **Example of Global Variable Access**
+
+**bintree.h:**
+```c
+#ifndef BINTREE_H
+#define BINTREE_H
+
+typedef struct node {
+    int node_id;
+    int data;
+    struct node* left;
+    struct node* right;
+} node;
+
+extern node* root;  // Declare root as an external variab
+
+void insert_node(int node_id, int data);
+int find_node_data(int node_id);
+
+#endif
+```
+
+**bintree.c:**
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "bintree.h"
+
+node* root = NULL;  // Define root globally
+
+void insert_node(int node_id, int data) {
+    node* new_node = malloc(sizeof(node));
+    if (new_node == NULL) {
+        printf("The new node could not be initialized");
+        exit(1);
+    }
+    new_node->data = data;
+    new_node->node_id = node_id;
+    new_node->left = NULL;
+    new_node->right = NULL;
+
+    node* current_node = root;
+    node* parent_node = NULL;
+
+    if (root == NULL) {
+        root = new_node;
+    } else {
+        while (current_node != NULL) {
+            parent_node = current_node;
+            if (new_node->node_id < current_node->node_id) {
+                current_node = current_node->left;
+            } else {
+                current_node = current_node->right;
+            }
+        }
+        if (new_node->node_id < parent_node->node_id) {
+            parent_node->left = new_node;
+        } else {
+            parent_node->right = new_node;
+        }
+    }
+}
+```
+
+**main.c:**
+```c
+#include <stdio.h>
+#include "bintree.h"
+
+int main() {
+    insert_node(10, 100);
+    insert_node(5, 50);
+    insert_node(15, 150);
+
+    // You can access and use 'root' here if needed
+    return 0;
+}
+```
+
+### Summary
+
+- **Global `root`**: Accessible from any function or file that includes the header and has the `ex
+	return 0;
+}
