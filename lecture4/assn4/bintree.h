@@ -11,6 +11,7 @@ typedef struct node {
 
 void insert_node(int node_id, int data);
 int find_node_data(int node_id);
+void remove_node(int node_id);
 
 ///*** DO NOT CHANGE ANY FUNCTION DEFINITIONS ***///
 // Declare the tree modification functions below...
